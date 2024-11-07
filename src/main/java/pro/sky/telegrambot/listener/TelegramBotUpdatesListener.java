@@ -49,7 +49,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     public int process(List<Update> updates) {
 
         String messageText = "Hello!";
-        List<NotificationTask> notificationTask = notificationTaskService.findAllTasks();
+
         NotificationTask newTask = new NotificationTask();
 
 
@@ -65,8 +65,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
             newTask.setChatId(chatId);
             newTask.setMessage(update.message().text());
-            //Pattern pattern = Pattern.compile("(\\d{2}\\.\\d{2}\\.\\d{4}\\s\\d{2}:\\d{2})(\\s+)(.+)");
-            //Date.valueOf(String.valueOf(format.parse(strDate)));
+
 
             String myString = update.message().text();
             Pattern pattern = Pattern.compile("(\\d{2}\\.\\d{2}\\.\\d{4})(\\s+)(.+)");
@@ -81,18 +80,18 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 strDate = matcher.group(1);
                 strDate = strDate.replace('.', '-');
                 if (strDate != null) {
-                    // date = Date.valueOf(strDate);
+
                     try {
                         java.util.Date utilDate = format.parse(strDate);
                         date = new java.sql.Date(utilDate.getTime());
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }
-                    System.out.println(date.toString());
+
                     newTask.setDate(date);
                 }
 
-                System.out.println(strDate);
+
             }
 
             String strTime;
@@ -109,15 +108,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             // Process your updates here
         });
 
-        //System.out.println(newTask.toString());
 
-        notificationTaskService.NotifTaskSave(newTask);
 
-        List<NotificationTask> nT = notificationTaskService.findAllTasks();
+        notificationTaskService.notifTaskSave(newTask);
 
-        for (int i = 0; i < nT.size(); i++) {
-            System.out.println(nT.get(i).toString());
-        }
+
 
 
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
@@ -142,7 +137,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     String messageText = nT.get(i).getMessage();
                     SendMessage message = new SendMessage(chatId, messageText);
                     SendResponse response = telegramBot.execute(message);
-//                    System.out.println(nT.get(i).toString());
                     System.out.println("Отправка");
 
 

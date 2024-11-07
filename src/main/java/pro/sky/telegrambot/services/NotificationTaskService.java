@@ -17,7 +17,7 @@ public class NotificationTaskService {
         this.notificationTaskRep = notificationTaskRep;
     }
 
-    public void NotifTaskSave(NotificationTask notificationTask)
+    public void notifTaskSave(NotificationTask notificationTask)
     {
         notificationTaskRep.save(notificationTask);
 
